@@ -32,6 +32,19 @@ fun CurrencyDto.toCurrencyHolder(): CurrencyHolder {
             mainCurrency = Currency.USD(abbreviation = this.abbreviation, value = this.conversionRates.USD),
             conversionsList = this.conversionRates.toCurrencyList()
         )
+        "CZK" -> CurrencyHolder(
+            mainCurrency = Currency.CZK(abbreviation = this.abbreviation, value = this.conversionRates.CZK),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+        "AUD" -> CurrencyHolder(
+            mainCurrency = Currency.AUD(abbreviation = this.abbreviation, value = this.conversionRates.AUD),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "CAD" -> CurrencyHolder(
+            mainCurrency = Currency.CAD(abbreviation = this.abbreviation, value = this.conversionRates.CAD),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
         else -> CurrencyHolder(
             mainCurrency = Currency.CZK(abbreviation = this.abbreviation, value = this.conversionRates.CZK),
             conversionsList = this.conversionRates.toCurrencyList()

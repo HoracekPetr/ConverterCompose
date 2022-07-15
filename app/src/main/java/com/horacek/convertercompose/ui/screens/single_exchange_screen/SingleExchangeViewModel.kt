@@ -23,7 +23,7 @@ class SingleExchangeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getSingleExchange("USD")
+            getSingleExchange("AUD")
         }
     }
 
