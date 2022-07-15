@@ -26,8 +26,8 @@ fun ConversionRates.toCurrencyList(): List<Currency?>{
         when(property.name){
             "USD" -> Currency.USD(abbreviation = property.name, value = this.USD)
             "CZK" -> Currency.CZK(abbreviation = property.name, value = this.CZK)
-            "AUD" -> Currency.AUD(abbreviation = property.name, value = this.CAD)
-            "CAD" -> Currency.CAD(abbreviation = property.name, value = this.AUD)
+            "AUD" -> Currency.AUD(abbreviation = property.name, value = this.AUD)
+            "CAD" -> Currency.CAD(abbreviation = property.name, value = this.CAD)
             else -> null
         }
     }
