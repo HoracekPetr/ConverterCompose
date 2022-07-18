@@ -4,4 +4,5 @@
     <string name="cant_load_currency">Couldn\'t load the currency.</string>
     <string name="cant_reach_server">Can\'t reach the server. Please check your connection.</string>
     <string name="something_went_wrong">Sorry, something went wrong. Please try again.</string>
+    <string name="couldnt_make_exchange">Couldn\'t make a pair exchange.</string>
 </resources>

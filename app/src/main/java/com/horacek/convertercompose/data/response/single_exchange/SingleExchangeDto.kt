@@ -1,11 +1,11 @@
-package com.horacek.convertercompose.data.response
+package com.horacek.convertercompose.data.response.single_exchange
 
 
 import com.google.gson.annotations.SerializedName
-import com.horacek.convertercompose.domain.single_exchange_usecase.model.Currency
+import com.horacek.convertercompose.ui.model.Currency
 import com.horacek.convertercompose.domain.single_exchange_usecase.model.CurrencyHolder
 
-data class CurrencyDto(
+data class SingleExchangeDto(
     @SerializedName("base_code")
     val abbreviation: String,
     @SerializedName("conversion_rates")
@@ -26,7 +26,7 @@ data class CurrencyDto(
     val timeNextUpdateUtc: String
 )
 
-fun CurrencyDto.toCurrencyHolder(): CurrencyHolder {
+fun SingleExchangeDto.toCurrencyHolder(): CurrencyHolder? {
     return when(this.abbreviation) {
         "USD" -> CurrencyHolder(
             mainCurrency = Currency.USD(abbreviation = this.abbreviation, value = this.conversionRates.USD),
@@ -45,9 +45,43 @@ fun CurrencyDto.toCurrencyHolder(): CurrencyHolder {
             mainCurrency = Currency.CAD(abbreviation = this.abbreviation, value = this.conversionRates.CAD),
             conversionsList = this.conversionRates.toCurrencyList()
         )
-        else -> CurrencyHolder(
-            mainCurrency = Currency.CZK(abbreviation = this.abbreviation, value = this.conversionRates.CZK),
+
+        "CHF" -> CurrencyHolder(
+            mainCurrency = Currency.CHF(abbreviation = this.abbreviation, value = this.conversionRates.CHF),
             conversionsList = this.conversionRates.toCurrencyList()
         )
+
+        "CNY" -> CurrencyHolder(
+            mainCurrency = Currency.CNY(abbreviation = this.abbreviation, value = this.conversionRates.CNY),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "EUR" -> CurrencyHolder(
+            mainCurrency = Currency.EUR(abbreviation = this.abbreviation, value = this.conversionRates.EUR),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "GBP" -> CurrencyHolder(
+            mainCurrency = Currency.GBP(abbreviation = this.abbreviation, value = this.conversionRates.GBP),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "JPY" -> CurrencyHolder(
+            mainCurrency = Currency.JPY(abbreviation = this.abbreviation, value = this.conversionRates.JPY),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "RUB" -> CurrencyHolder(
+            mainCurrency = Currency.RUB(abbreviation = this.abbreviation, value = this.conversionRates.RUB),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        "NZD" -> CurrencyHolder(
+            mainCurrency = Currency.CHF(abbreviation = this.abbreviation, value = this.conversionRates.NZD),
+            conversionsList = this.conversionRates.toCurrencyList()
+        )
+
+        else -> null
+
     }
 }

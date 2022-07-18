@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.horacek.convertercompose.ui.screens.PairExchangeScreen
+import com.horacek.convertercompose.ui.screens.pair_exchange_screen.PairExchangeScreen
 import com.horacek.convertercompose.ui.screens.single_exchange_screen.SingleExchangeScreen
 
 @Composable

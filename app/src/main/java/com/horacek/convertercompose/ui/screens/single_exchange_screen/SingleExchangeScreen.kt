@@ -15,9 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.horacek.convertercompose.R
-import com.horacek.convertercompose.domain.single_exchange_usecase.model.Currency
-import com.horacek.convertercompose.domain.single_exchange_usecase.model.CurrencyHolder
 import com.horacek.convertercompose.ui.components.CurrencyComposable
 import com.horacek.convertercompose.ui.components.CurrencyComposableType
 import com.horacek.convertercompose.util.LargeDim
@@ -91,8 +88,14 @@ fun SingleExchangeScreen(
                                     currencyAbbreviation = currency.abbreviation,
                                     currencyFullName = currency.fullName,
                                     currencySign = currency.sign,
-                                    currencyValue = currency.value
-                                )
+                                    currencyValue = currency.value ?: 0.0
+                                ){
+                                    viewModel.onEvent(
+                                        SingleExchangeEvent.ChangedCurrency(
+                                            currency = currency.abbreviation
+                                        )
+                                    )
+                                }
                             }
                         }
                     }

@@ -23,7 +23,17 @@ class SingleExchangeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getSingleExchange("AUD")
+            getSingleExchange("USD")
+        }
+    }
+
+    fun onEvent(event: SingleExchangeEvent){
+        when(event){
+            is SingleExchangeEvent.ChangedCurrency -> {
+                viewModelScope.launch {
+                    getSingleExchange(event.currency)
+                }
+            }
         }
     }
 

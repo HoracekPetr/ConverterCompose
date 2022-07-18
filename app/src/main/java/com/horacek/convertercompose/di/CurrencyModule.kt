@@ -4,6 +4,7 @@ import com.horacek.convertercompose.data.remote.CurrencyApi
 import com.horacek.convertercompose.data.repository.CurrencyRepository
 import com.horacek.convertercompose.data.repository.CurrencyRepositoryImpl
 import com.horacek.convertercompose.data.util.Constants.BASE_URL
+import com.horacek.convertercompose.domain.pair_exchange_usecase.GetPairExchangeUseCase
 import com.horacek.convertercompose.domain.single_exchange_usecase.GetSingleExchangeUseCase
 import dagger.Module
 import dagger.Provides
@@ -38,5 +39,11 @@ object CurrencyModule {
     @Singleton
     fun provideSingleExchangeUseCase(repository: CurrencyRepository): GetSingleExchangeUseCase{
         return GetSingleExchangeUseCase(repository = repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePairExchangeUseCase(repository: CurrencyRepository): GetPairExchangeUseCase {
+        return GetPairExchangeUseCase(repository = repository)
     }
 }

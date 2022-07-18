@@ -1,8 +1,7 @@
 package com.horacek.convertercompose.domain.single_exchange_usecase
 
 import com.horacek.convertercompose.data.repository.CurrencyRepository
-import com.horacek.convertercompose.data.response.CurrencyDto
-import com.horacek.convertercompose.data.response.toCurrencyHolder
+import com.horacek.convertercompose.data.response.single_exchange.toCurrencyHolder
 import com.horacek.convertercompose.data.util.Resource
 import com.horacek.convertercompose.domain.single_exchange_usecase.model.CurrencyHolder
 import com.horacek.convertercompose.ui.util.UiText
