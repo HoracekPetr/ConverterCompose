@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.horacek.convertercompose.data.util.Resource
 import com.horacek.convertercompose.domain.pair_exchange_usecase.GetPairExchangeUseCase
 import com.horacek.convertercompose.domain.pair_exchange_usecase.model.PairExchangeHolder
+import com.horacek.convertercompose.ui.components.PickedCurrency
 import com.horacek.convertercompose.ui.model.Currency
 import com.horacek.convertercompose.ui.screens.pair_exchange_screen.states.AmountTextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,8 +33,14 @@ class PairExchangeViewModel @Inject constructor(
     private val _toCurrency = mutableStateOf<Currency?>(Currency.GBP(abbreviation = "GBP"))
     val toCurrency = _toCurrency
 
-    private val _resultText = mutableStateOf<String?>(null)
-    val resultText = _resultText
+    private val _isPickCountryDialogOpen = mutableStateOf(false)
+    val isPickCountryDialogOpen = _isPickCountryDialogOpen
+
+    private val _pickedCurrency = mutableStateOf<PickedCurrency?>(null)
+    val pickedCurrency = _pickedCurrency
+
+    private val _gotResult = mutableStateOf(false)
+    val gotResult = _gotResult
 
     fun onEvent(event: PairExchangeEvent) {
         when (event) {
@@ -51,6 +58,23 @@ class PairExchangeViewModel @Inject constructor(
                 _amountTextfieldState.value = _amountTextfieldState.value.copy(
                     text = event.amount
                 )
+            }
+
+            is PairExchangeEvent.ChangeDialogOpenStatus -> {
+                _isPickCountryDialogOpen.value = !_isPickCountryDialogOpen.value
+            }
+            is PairExchangeEvent.ChangePickedCurrency -> {
+                _pickedCurrency.value = event.pickedCurrency
+            }
+            is PairExchangeEvent.ChangeCurrency -> {
+                when(event.pickedCurrency){
+                    PickedCurrency.From -> {
+                        _fromCurrency.value = event.currency
+                    }
+                    PickedCurrency.To -> {
+                        _toCurrency.value = event.currency
+                    }
+                }
             }
         }
     }
@@ -78,8 +102,7 @@ class PairExchangeViewModel @Inject constructor(
                     targetCode = response.data?.targetCode,
                 )
 
-                _resultText.value =
-                    "${_amountTextfieldState.value.text} ${_pairExchangeHolder.value.baseCode} = ${_pairExchangeHolder.value.conversionResult} ${_pairExchangeHolder.value.targetCode}"
+                _gotResult.value = true
 
                 _isLoading.value = false
             }

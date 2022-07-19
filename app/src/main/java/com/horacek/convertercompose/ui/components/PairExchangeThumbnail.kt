@@ -40,7 +40,7 @@ fun PairExchangeThumbnail(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                modifier = Modifier.size(width = 50.dp, height = 30.dp),
+                modifier = Modifier.size(width = 70.dp, height = 40.dp),
                 painter = thumbnailPhoto,
                 contentDescription = "Thumbnail pic",
                 contentScale = ContentScale.FillBounds

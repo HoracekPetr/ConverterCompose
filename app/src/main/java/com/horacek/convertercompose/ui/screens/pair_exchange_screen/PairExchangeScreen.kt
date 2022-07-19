@@ -1,15 +1,11 @@
 package com.horacek.convertercompose.ui.screens.pair_exchange_screen
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.Paid
-import androidx.compose.material.icons.filled.ToggleOff
 import androidx.compose.material.icons.filled.ToggleOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,19 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.horacek.convertercompose.R
-import com.horacek.convertercompose.ui.components.CurrencyComposable
-import com.horacek.convertercompose.ui.components.CurrencyComposableType
-import com.horacek.convertercompose.ui.components.PairExchangeThumbnail
-import com.horacek.convertercompose.ui.screens.single_exchange_screen.SingleExchangeEvent
+import com.horacek.convertercompose.ui.components.*
 import com.horacek.convertercompose.ui.theme.DarkGreen
 import com.horacek.convertercompose.util.ExtraLargeDim
-import com.horacek.convertercompose.util.LargeDim
 import com.horacek.convertercompose.util.MediumDim
 import com.horacek.convertercompose.util.SmallDim
 import com.horacek.convertercompose.util.navigation.Screens
@@ -42,16 +33,36 @@ fun PairExchangeScreen(
 ) {
 
     val amountTextField = viewModel.amountTextFieldState.value
-    val resultText = viewModel.resultText.value
+    val gotResult = viewModel.gotResult.value
+    val pairExchangeHolder = viewModel.pairExchangeHolder.value
     val fromCurrency = viewModel.fromCurrency.value
     val toCurrency = viewModel.toCurrency.value
     val isLoading = viewModel.isLoading.value
+    val isPickDialogOpen = viewModel.isPickCountryDialogOpen.value
+    val pickedCurrency = viewModel.pickedCurrency.value ?: PickedCurrency.From
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = MediumDim, end = MediumDim, top = MediumDim, bottom = SmallDim)
     ) {
+
+        if (isPickDialogOpen) {
+            CountryPickDialog(
+                modifier = Modifier.fillMaxWidth(),
+                onDismissRequest = { viewModel.onEvent(PairExchangeEvent.ChangeDialogOpenStatus) },
+                pickedCurrency = pickedCurrency,
+                setCurrency = { currency, pickedCurrency ->
+                    viewModel.onEvent(
+                        PairExchangeEvent.ChangeCurrency(
+                            pickedCurrency = pickedCurrency,
+                            currency = currency
+                        )
+                    )
+                }
+            )
+        }
+
         IconButton(
             modifier = Modifier.align(Alignment.End),
             onClick = {
@@ -110,9 +121,14 @@ fun PairExchangeScreen(
             ) {
                 Text(text = "From")
                 PairExchangeThumbnail(
-                    thumbnailPhoto = painterResource(id = fromCurrency?.flagResourceId ?: R.drawable.ic_launcher_background),
+                    thumbnailPhoto = painterResource(
+                        id = fromCurrency?.flagResourceId ?: R.drawable.ic_launcher_background
+                    ),
                     abbreviation = fromCurrency?.abbreviation ?: "ERR"
-                )
+                ) {
+                    viewModel.onEvent(PairExchangeEvent.ChangePickedCurrency(PickedCurrency.From))
+                    viewModel.onEvent(PairExchangeEvent.ChangeDialogOpenStatus)
+                }
             }
 
             Column(
@@ -122,9 +138,14 @@ fun PairExchangeScreen(
             ) {
                 Text(text = "To")
                 PairExchangeThumbnail(
-                    thumbnailPhoto = painterResource(id = toCurrency?.flagResourceId ?: R.drawable.ic_launcher_background),
+                    thumbnailPhoto = painterResource(
+                        id = toCurrency?.flagResourceId ?: R.drawable.ic_launcher_background
+                    ),
                     abbreviation = toCurrency?.abbreviation ?: "ERR"
-                )
+                ) {
+                    viewModel.onEvent(PairExchangeEvent.ChangePickedCurrency(PickedCurrency.To))
+                    viewModel.onEvent(PairExchangeEvent.ChangeDialogOpenStatus)
+                }
             }
         }
 
@@ -134,13 +155,13 @@ fun PairExchangeScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             enabled = amountTextField.text != null,
             onClick = {
-                      viewModel.onEvent(
-                          PairExchangeEvent.ConvertButtonClicked(
-                              fromCurrencyAbbreviation = fromCurrency?.abbreviation ?: "USD",
-                              toCurrencyAbbreviation = toCurrency?.abbreviation ?: "USD",
-                              amount = amountTextField.text?.toDoubleOrNull() ?: 0.0
-                          )
-                      )
+                viewModel.onEvent(
+                    PairExchangeEvent.ConvertButtonClicked(
+                        fromCurrencyAbbreviation = fromCurrency?.abbreviation ?: "USD",
+                        toCurrencyAbbreviation = toCurrency?.abbreviation ?: "USD",
+                        amount = amountTextField.text?.toDoubleOrNull() ?: 0.0
+                    )
+                )
             },
 
             shape = RoundedCornerShape(MediumDim),
@@ -162,15 +183,28 @@ fun PairExchangeScreen(
         }
 
         Spacer(modifier = Modifier.size(ExtraLargeDim))
-        if(isLoading){
+        if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         } else {
-            if (resultText != null) {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = resultText,
-                    style = TextStyle(fontSize = 32.sp, textAlign = TextAlign.Center)
-                )
+            if (gotResult) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ResultCard(
+                        pickedCurrency = PickedCurrency.From,
+                        currency = fromCurrency,
+                        amount = amountTextField.text,
+                    )
+                    Text(text = "=", fontSize = 24.sp)
+
+                    ResultCard(
+                        pickedCurrency = PickedCurrency.To,
+                        currency = toCurrency,
+                        conversionResult = pairExchangeHolder.conversionResult
+                    )
+                }
             }
         }
     }

@@ -10,7 +10,7 @@ sealed class Currency(
     val value: Double? = 1.0
 ) {
     class USD(
-        abbreviation: String,
+        abbreviation: String = "USD",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -21,7 +21,7 @@ sealed class Currency(
     )
 
     class CZK(
-        abbreviation: String,
+        abbreviation: String = "CZK",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -32,7 +32,7 @@ sealed class Currency(
     )
 
     class AUD(
-        abbreviation: String,
+        abbreviation: String = "AUD",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -43,7 +43,7 @@ sealed class Currency(
     )
 
     class CAD(
-        abbreviation: String,
+        abbreviation: String = "CAD",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -54,7 +54,7 @@ sealed class Currency(
     )
 
     class CHF(
-        abbreviation: String,
+        abbreviation: String = "CHF",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -65,7 +65,7 @@ sealed class Currency(
     )
 
     class CNY(
-        abbreviation: String,
+        abbreviation: String = "CNY",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -76,7 +76,7 @@ sealed class Currency(
     )
 
     class EUR(
-        abbreviation: String,
+        abbreviation: String = "EUR",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -87,7 +87,7 @@ sealed class Currency(
     )
 
     class GBP(
-        abbreviation: String,
+        abbreviation: String = "GBP",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -98,7 +98,7 @@ sealed class Currency(
     )
 
     class JPY(
-        abbreviation: String,
+        abbreviation: String = "JPY",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -109,7 +109,7 @@ sealed class Currency(
     )
 
     class RUB(
-        abbreviation: String,
+        abbreviation: String = "RUB",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -120,7 +120,7 @@ sealed class Currency(
     )
 
     class NZD(
-        abbreviation: String,
+        abbreviation: String = "NZD",
         value: Double? = null
     ): Currency(
         abbreviation = abbreviation,
@@ -129,4 +129,15 @@ sealed class Currency(
         sign = "$",
         value = value
     )
+
+    companion object{
+        fun getAllCurrencies(): List<Currency>{
+            return listOf(
+                AUD(), RUB(), USD(), CZK(),
+                CAD(), CHF(), CNY(), EUR(),
+                GBP(), JPY(), NZD()
+            )
+        }
+    }
 }
+
