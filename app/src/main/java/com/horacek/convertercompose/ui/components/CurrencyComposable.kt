@@ -101,7 +101,7 @@ fun CurrencyComposable(
 
                         Text(
                             text = "$currencySign $currencyValue",
-                            style = TextStyle(fontSize = 24.sp)
+                            style = TextStyle(fontSize = 18.sp)
                         )
                     }
                 }
