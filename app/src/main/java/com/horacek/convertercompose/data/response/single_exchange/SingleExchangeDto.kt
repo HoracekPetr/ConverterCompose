@@ -77,7 +77,7 @@ fun SingleExchangeDto.toCurrencyHolder(): CurrencyHolder? {
         )
 
         "NZD" -> CurrencyHolder(
-            mainCurrency = Currency.CHF(abbreviation = this.abbreviation, value = this.conversionRates.NZD),
+            mainCurrency = Currency.NZD(abbreviation = this.abbreviation, value = this.conversionRates.NZD),
             conversionsList = this.conversionRates.toCurrencyList()
         )
 
